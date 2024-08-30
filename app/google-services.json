@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "734130186654",
+    "firebase_url": "https://usthb-9raya-default-rtdb.firebaseio.com",
+    "project_id": "usthb-9raya",
+    "storage_bucket": "usthb-9raya.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734130186654:android:a6b3ea4239abd354ee4e8f",
+        "android_client_info": {
+          "package_name": "com.example.usthb9raya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCglQcc_u4eFCFVafKrlOSX5jZvDA3_gCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734130186654:android:f70c2a31c0d2f5efee4e8f",
+        "android_client_info": {
+          "package_name": "com.example.usthb9rayaadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCglQcc_u4eFCFVafKrlOSX5jZvDA3_gCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
