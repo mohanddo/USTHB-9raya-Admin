@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.widget.TextView
 import com.example.usthb9rayaadmin.ContributionDetailsActivity
-import com.example.usthb9rayaadmin.dataClass.Contribution
+import com.example.usthb9rayaadmin.DataClass.Contribution
 
 class ContributionAdapter(private val context: Context, private val dataSet: Array<Contribution>) :
     RecyclerView.Adapter<ContributionAdapter.ViewHolder>() {
@@ -22,7 +22,9 @@ class ContributionAdapter(private val context: Context, private val dataSet: Arr
         val type: TextView = view.findViewById(R.id.Type)
         init {
             view.setOnClickListener {
-                context.startActivity(Intent(context, ContributionDetailsActivity::class.java))
+                val i = Intent(context, ContributionDetailsActivity::class.java)
+                i.putExtra("contribution", dataSet[adapterPosition])
+                context.startActivity(i)
             }
         }
     }

@@ -2,19 +2,22 @@ package com.example.usthb9rayaadmin
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.usthb9rayaadmin.dataClass.Contribution
-import com.example.usthb9rayaadmin.utils.FirebaseUtil.contributionsRef
+import com.example.usthb9rayaadmin.DataClass.Contribution
+import com.example.usthb9rayaadmin.Utils.FirebaseUtil.contributionsRef
 import com.example.usthb9rayaadmin.adapters.ContributionAdapter
 import com.example.usthb9rayaadmin.databinding.ActivityMainBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -30,11 +33,16 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val progressBar = binding.progressBar
+        progressBar.show()
+
         val recyclerView: RecyclerView = findViewById(R.id.RecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val contributionsListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                progressBar.hide()
 
                 val contributionsList = mutableListOf<Contribution>()
 
@@ -50,6 +58,6 @@ class MainActivity : AppCompatActivity() {
                 Log.w("Database Error", "loadPost:onCancelled", databaseError.toException())
             }
         }
-        contributionsRef.addValueEventListener(contributionsListener)
+            contributionsRef.addValueEventListener(contributionsListener)
     }
 }
