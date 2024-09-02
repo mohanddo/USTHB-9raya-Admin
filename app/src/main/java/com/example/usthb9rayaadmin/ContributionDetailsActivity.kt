@@ -2,11 +2,7 @@ package com.example.usthb9rayaadmin
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.os.Build
-import android.Manifest
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
@@ -14,13 +10,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.usthb9rayaadmin.DataClass.Contribution
-import com.example.usthb9rayaadmin.Utils.FirebaseUtil
 import com.example.usthb9rayaadmin.Utils.FirebaseUtil.downloadFileToInternalStorage
 import com.example.usthb9rayaadmin.Utils.Util
 import com.example.usthb9rayaadmin.databinding.ActivityContributionDetailsBinding
@@ -37,6 +31,7 @@ class ContributionDetailsActivity : AppCompatActivity() {
     private lateinit var date: TextView
     private lateinit var contribution: Contribution
     private lateinit var progressBar: ProgressBar
+    private lateinit var openFileButt: AppCompatButton
     private var ext: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,10 +59,11 @@ class ContributionDetailsActivity : AppCompatActivity() {
         faculty.text = contribution.faculty
         module.text = contribution.module
         type.text = contribution.type
-        contribution.comment?.let {
-            comment.text = it
+        if(contribution.comment.isNotEmpty()) {
+            comment.text = contribution.comment
             comment.visibility = View.VISIBLE
         }
+
         date.text = Util.calculateDateFromTimestamp(contribution.timestamp)
 
         val downloadFileButt = binding.DownloadFileButt
@@ -79,7 +75,7 @@ class ContributionDetailsActivity : AppCompatActivity() {
             ext = Util.mimeTypeToExtension(contribution.mimeType)
             val extension = ext
             if(ext != null) {
-                    downloadFileToInternalStorage(this, contribution.contributionId, extension!!, progressBar, downloadFileButt)
+                    downloadFileToInternalStorage(this, contribution.contributionId, extension!!, progressBar, downloadFileButt, openFileButt)
             } else {
                 Toast.makeText(this, "Error finding extension", Toast.LENGTH_SHORT).show()
             }
@@ -91,29 +87,31 @@ class ContributionDetailsActivity : AppCompatActivity() {
             i.putExtra("contribution", contribution)
             startActivity(i)
         }
-
-//        binding.OpenFileButt.setOnClickListener {
-//            openFileFromInternalStorage(this, "${contribution.contributionId}.${ext}", contribution.mimeType)
-//        }
+        openFileButt = binding.openFileButt
+        openFileButt.setOnClickListener {
+            val ext = Util.mimeTypeToExtension(contribution.mimeType)
+            openFileFromInternalStorage(this, "${contribution.contributionId}.${ext}", contribution.mimeType)
+        }
     }
 
-//    private fun openFileFromInternalStorage(context: Context, fileName: String, mimeType: String) {
-//        try {
-//
-//            val file = File(context.getExternalFilesDir(null), fileName)
-//
-//            val uri = FileProvider.getUriForFile(this, "${packageName}.provider", file)
-//            val intent = Intent(Intent.ACTION_VIEW).apply {
-//                setDataAndType(uri, mimeType)
-//                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//            }
-//            startActivity(intent)
-//
-//        } catch (e: Exception) {
-//            e.printStackTrace()
+    private fun openFileFromInternalStorage(context: Context, fileName: String, mimeType: String) {
+        try {
+
+            val file = File(context.getExternalFilesDir(null), fileName)
+
+            val uri = FileProvider.getUriForFile(this, "${packageName}.provider", file)
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, mimeType)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(intent)
+
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error opening file, please try again.", Toast.LENGTH_LONG).show()
+            Log.e("FileDownloader", "Error opening file: ${e}")
 //            Toast.makeText(this, "Error opening file: ${e.message}", Toast.LENGTH_SHORT).show()
-//        }
-//    }
+        }
+    }
 
 
 }

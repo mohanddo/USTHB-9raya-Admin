@@ -19,7 +19,7 @@ object FirebaseUtil {
     private val database = Firebase.database
     val contributionsRef = database.getReference("contributions")
 
-    fun downloadFileToInternalStorage(context: Context, fileName: String, fileExtension: String, progressBar: ProgressBar, downloadButt: AppCompatButton) {
+    fun downloadFileToInternalStorage(context: Context, fileName: String, fileExtension: String, progressBar: ProgressBar, downloadButt: AppCompatButton, openButt: AppCompatButton) {
 
         val storageReference = storageRef.child("uploads/${fileName}")
 
@@ -37,6 +37,7 @@ object FirebaseUtil {
             Toast.makeText(context, "File downloaded to ${file.absolutePath}", Toast.LENGTH_LONG).show()
             Log.e("FileDownloader", "File downloaded to ${file.absolutePath}")
             progressBar.visibility = View.GONE
+            openButt.visibility = View.VISIBLE
 
         }.addOnFailureListener { exception ->
             progressBar.visibility = View.GONE

@@ -135,7 +135,7 @@
                     android:textSize="16sp"
                     android:visibility="gone"
                     android:background="@drawable/bck_text_out_put"
-                    android:drawableStart="@drawable/ic_person"
+                    android:drawableStart="@drawable/ic_comment"
                     android:drawablePadding="8dp"
                     android:padding="8dp"
                     android:layout_gravity="center_vertical" />
@@ -168,7 +168,8 @@
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         android:background="@drawable/bck_butt"
-                        android:layout_marginVertical="16dp"/>
+                        android:layout_marginVertical="16dp"
+                        android:visibility="gone"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/DownloadFileButt"
