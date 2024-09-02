@@ -32,6 +32,7 @@ class ContributionDetailsActivity : AppCompatActivity() {
     private lateinit var contribution: Contribution
     private lateinit var progressBar: ProgressBar
     private lateinit var openFileButt: AppCompatButton
+    private lateinit var downloadFileButt: AppCompatButton
     private var ext: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +53,12 @@ class ContributionDetailsActivity : AppCompatActivity() {
         comment = binding.comment
         date = binding.date
         progressBar = binding.progressBar
+        downloadFileButt = binding.DownloadFileButt
+
+        if(contribution.fileDownloaded == "true") {
+            downloadFileButt.visibility = View.GONE
+            openFileButt.visibility = View.VISIBLE
+        }
 
         contribution = intent.getParcelableExtra("contribution")!!
         fullName.text = contribution.fullName
@@ -66,16 +73,12 @@ class ContributionDetailsActivity : AppCompatActivity() {
 
         date.text = Util.calculateDateFromTimestamp(contribution.timestamp)
 
-        val downloadFileButt = binding.DownloadFileButt
-        if(contribution.fileDownloaded == "true") {
-            downloadFileButt.visibility = View.GONE
-        }
         downloadFileButt.setOnClickListener {
 
             ext = Util.mimeTypeToExtension(contribution.mimeType)
             val extension = ext
             if(ext != null) {
-                    downloadFileToInternalStorage(this, contribution.contributionId, extension!!, progressBar, downloadFileButt, openFileButt)
+                    downloadFileToInternalStorage(this, contribution.contributionId, extension!!, progressBar, downloadFileButt)
             } else {
                 Toast.makeText(this, "Error finding extension", Toast.LENGTH_SHORT).show()
             }
@@ -87,6 +90,7 @@ class ContributionDetailsActivity : AppCompatActivity() {
             i.putExtra("contribution", contribution)
             startActivity(i)
         }
+
         openFileButt = binding.openFileButt
         openFileButt.setOnClickListener {
             val ext = Util.mimeTypeToExtension(contribution.mimeType)
