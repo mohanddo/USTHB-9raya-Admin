@@ -41,179 +41,188 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="16dp">
+        android:layout_height="wrap_content">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="16dp"
             android:layout_marginHorizontal="16dp">
-
-            <TextView
-                android:id="@+id/FullName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Meghaoui Mohand Amokrane"
-                android:layout_marginVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:background="@drawable/bck_text_out_put"
-                android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:layout_gravity="center_vertical" />
-
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="mohandmeghaoui0@gmail.com"
-                android:layout_marginVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:background="@drawable/bck_text_out_put"
-                android:drawableStart="@drawable/ic_email"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:layout_gravity="center_vertical" />
-
-            <TextView
-                android:id="@+id/faculty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Faculte De chimie"
-                android:layout_marginVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:background="@drawable/bck_text_out_put"
-                android:drawableStart="@drawable/ic_diploma"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:layout_gravity="center_vertical" />
-
-            <TextView
-                android:id="@+id/module"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Chimie"
-                android:layout_marginVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:background="@drawable/bck_text_out_put"
-                android:drawableStart="@drawable/ic_diploma"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:layout_gravity="center_vertical" />
-
-            <TextView
-                android:id="@+id/type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TD"
-                android:layout_marginVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:background="@drawable/bck_text_out_put"
-                android:drawableStart="@drawable/ic_school_book"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:layout_gravity="center_vertical" />
-
-            <TextView
-                android:id="@+id/comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:visibility="gone"
-                android:background="@drawable/bck_text_out_put"
-                android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:layout_gravity="center_vertical" />
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="2024/06/05"
-                android:layout_marginVertical="8dp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:background="@drawable/bck_text_out_put"
-                android:drawableStart="@drawable/ic_time"
-                android:drawablePadding="8dp"
-                android:padding="8dp"
-                android:layout_gravity="center_vertical" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginHorizontal="8dp">
+                android:layout_marginHorizontal="16dp">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/openFileButt"
+                <TextView
+                    android:id="@+id/FullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Open file"
-                    android:textAllCaps="false"
+                    android:text="Meghaoui Mohand Amokrane"
+                    android:layout_marginVertical="8dp"
                     android:textColor="@color/black"
-                    android:background="@drawable/bck_butt"
-                    android:layout_marginVertical="16dp"/>
+                    android:textSize="16sp"
+                    android:background="@drawable/bck_text_out_put"
+                    android:drawableStart="@drawable/ic_person"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"
+                    android:layout_gravity="center_vertical" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/DownloadFileButt"
+                <TextView
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Download file"
-                    android:textAllCaps="false"
+                    android:text="mohandmeghaoui0@gmail.com"
+                    android:layout_marginVertical="8dp"
                     android:textColor="@color/black"
-                    android:background="@drawable/bck_butt"
-                    android:layout_marginVertical="16dp"/>
+                    android:textSize="16sp"
+                    android:background="@drawable/bck_text_out_put"
+                    android:drawableStart="@drawable/ic_email"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"
+                    android:layout_gravity="center_vertical" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/AcceptButt"
+                <TextView
+                    android:id="@+id/faculty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Accept contribution"
-                    android:textAllCaps="false"
+                    android:text="Faculte De chimie"
+                    android:layout_marginVertical="8dp"
                     android:textColor="@color/black"
-                    android:background="@drawable/bck_butt_accept"
-                    android:layout_marginVertical="16dp"/>
+                    android:textSize="16sp"
+                    android:background="@drawable/bck_text_out_put"
+                    android:drawableStart="@drawable/ic_diploma"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"
+                    android:layout_gravity="center_vertical" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/DenyButt"
+                <TextView
+                    android:id="@+id/module"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Deny contribution"
-                    android:textAllCaps="false"
+                    android:text="Chimie"
+                    android:layout_marginVertical="8dp"
                     android:textColor="@color/black"
-                    android:background="@drawable/bck_deny"
-                    android:layout_marginVertical="16dp"/>
+                    android:textSize="16sp"
+                    android:background="@drawable/bck_text_out_put"
+                    android:drawableStart="@drawable/ic_diploma"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"
+                    android:layout_gravity="center_vertical" />
+
+                <TextView
+                    android:id="@+id/type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TD"
+                    android:layout_marginVertical="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:background="@drawable/bck_text_out_put"
+                    android:drawableStart="@drawable/ic_school_book"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"
+                    android:layout_gravity="center_vertical" />
+
+                <TextView
+                    android:id="@+id/comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:background="@drawable/bck_text_out_put"
+                    android:drawableStart="@drawable/ic_person"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"
+                    android:layout_gravity="center_vertical" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2024/06/05"
+                    android:layout_marginVertical="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:background="@drawable/bck_text_out_put"
+                    android:drawableStart="@drawable/ic_time"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"
+                    android:layout_gravity="center_vertical" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginHorizontal="8dp">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/openFileButt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Open file"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:background="@drawable/bck_butt"
+                        android:layout_marginVertical="16dp"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/DownloadFileButt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Download file"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:background="@drawable/bck_butt"
+                        android:layout_marginVertical="16dp"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/AcceptButt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Accept contribution"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:background="@drawable/bck_butt_accept"
+                        android:layout_marginVertical="16dp"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/DenyButt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Deny contribution"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:background="@drawable/bck_deny"
+                        android:layout_marginVertical="16dp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:max="100"
+                android:visibility="gone"
+                style="?android:attr/progressBarStyleHorizontal"/>
+
+
+
+
 
         </LinearLayout>
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:max="100"
-        android:visibility="gone"
-        style="?android:attr/progressBarStyleHorizontal"/>
+
+    </ScrollView>
 
 
-
-
-
-    </LinearLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
