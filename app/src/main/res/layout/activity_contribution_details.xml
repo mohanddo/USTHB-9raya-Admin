@@ -78,17 +78,18 @@
         android:textSize="16sp"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/openFileButt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Open file"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/DownloadFileButt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Download file"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/OpenFileButt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open file"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/AcceptButt"
@@ -102,6 +103,14 @@
         android:layout_height="wrap_content"
         android:text="Deny contribution"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:max="100"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleHorizontal"/>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -9,6 +9,7 @@ import android.os.Build
 import android.Manifest
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -35,6 +36,7 @@ class ContributionDetailsActivity : AppCompatActivity() {
     private lateinit var comment: TextView
     private lateinit var date: TextView
     private lateinit var contribution: Contribution
+    private lateinit var progressBar: ProgressBar
     private var ext: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +56,7 @@ class ContributionDetailsActivity : AppCompatActivity() {
         type = binding.type
         comment = binding.comment
         date = binding.date
+        progressBar = binding.progressBar
 
         contribution = intent.getParcelableExtra("contribution")!!
         fullName.text = contribution.fullName
@@ -67,19 +70,50 @@ class ContributionDetailsActivity : AppCompatActivity() {
         }
         date.text = Util.calculateDateFromTimestamp(contribution.timestamp)
 
-        binding.DownloadFileButt.setOnClickListener {
+        val downloadFileButt = binding.DownloadFileButt
+        if(contribution.fileDownloaded == "true") {
+            downloadFileButt.visibility = View.GONE
+        }
+        downloadFileButt.setOnClickListener {
 
             ext = Util.mimeTypeToExtension(contribution.mimeType)
             val extension = ext
             if(ext != null) {
-                    downloadFileToInternalStorage(this, contribution.contributionId, extension!!)
+                    downloadFileToInternalStorage(this, contribution.contributionId, extension!!, progressBar, downloadFileButt)
             } else {
                 Toast.makeText(this, "Error finding extension", Toast.LENGTH_SHORT).show()
             }
 
         }
 
-        binding.openFileButt.setOnClickListener {
+        binding.DenyButt.setOnClickListener {
+            val i = Intent(this, DenyContributionActivity::class.java)
+            i.putExtra("contribution", contribution)
+            startActivity(i)
         }
+
+//        binding.OpenFileButt.setOnClickListener {
+//            openFileFromInternalStorage(this, "${contribution.contributionId}.${ext}", contribution.mimeType)
+//        }
     }
+
+//    private fun openFileFromInternalStorage(context: Context, fileName: String, mimeType: String) {
+//        try {
+//
+//            val file = File(context.getExternalFilesDir(null), fileName)
+//
+//            val uri = FileProvider.getUriForFile(this, "${packageName}.provider", file)
+//            val intent = Intent(Intent.ACTION_VIEW).apply {
+//                setDataAndType(uri, mimeType)
+//                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//            }
+//            startActivity(intent)
+//
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            Toast.makeText(this, "Error opening file: ${e.message}", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
+
 }

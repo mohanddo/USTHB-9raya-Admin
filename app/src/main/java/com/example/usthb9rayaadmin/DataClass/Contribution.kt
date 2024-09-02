@@ -13,7 +13,7 @@ data class Contribution(val fullName: String = "",
                         val contributionId: String = "",
                         val timestamp: Long = System.currentTimeMillis(),
     val mimeType: String = "",
-    val isFileDownloaded: String = "false"
+    val fileDownloaded: String = "false"
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         fullName = parcel.readString() ?: "",
@@ -26,7 +26,7 @@ data class Contribution(val fullName: String = "",
         contributionId = parcel.readString() ?: "",
         timestamp = parcel.readLong(),
         mimeType = parcel.readString() ?: "",
-        isFileDownloaded = parcel.readString() ?: "false"
+        fileDownloaded = parcel.readString() ?: "false"
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -40,7 +40,7 @@ data class Contribution(val fullName: String = "",
         parcel.writeString(contributionId)
         parcel.writeLong(timestamp)
         parcel.writeString(mimeType)
-        parcel.writeString(isFileDownloaded)
+        parcel.writeString(fileDownloaded)
     }
 
     override fun describeContents(): Int {

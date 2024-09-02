@@ -1,6 +1,13 @@
 package com.example.usthb9rayaadmin.Utils
 
 
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.util.Log
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.startActivity
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -50,6 +57,44 @@ object Util {
             "application/x-www-form-urlencoded" -> "urlencoded"
             else -> null
         }
+    }
+
+    fun sendEmail(context: Context, email: String, subject: String, body: String) {
+        val emailIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "vnd.android.cursor.dir/email"
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, body)
+        }
+        context.startActivity(Intent.createChooser(emailIntent, "Send email..."))
+    }
+
+    fun alertDialog(context: Context, title: String, message: String, positiveButtonMessage: String,
+                    negativeButtonMessage: String? = null, positiveButtonAction: () -> Unit, negativeButtonAction: ((DialogInterface) -> Unit)? = null
+    ) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setPositiveButton(positiveButtonMessage) { _, _ ->
+            positiveButtonAction.invoke()
+        }
+        negativeButtonMessage?.let {
+            builder.setNegativeButton(it) { dialog, _ ->
+                negativeButtonAction?.invoke(dialog)
+            }
+        }
+
+        builder.show()
+
+    }
+
+    fun deleteFileFromInternalStorage(context: Context, fileName: String): Boolean {
+
+        val file = File(context.getExternalFilesDir(null), fileName)
+        Log.e("FileExists", file.exists().toString())
+        return file.delete()
+
+
     }
 
 }

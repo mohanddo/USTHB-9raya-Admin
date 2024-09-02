@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+
     namespace = "com.example.usthb9rayaadmin"
     compileSdk = 34
 
@@ -20,6 +21,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -38,10 +40,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
 }
 
 dependencies {
-
     implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
