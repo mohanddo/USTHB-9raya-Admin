@@ -59,10 +59,11 @@ class ContributionDetailsActivity : AppCompatActivity() {
         faculty.text = contribution.faculty
         module.text = contribution.module
         type.text = contribution.type
-        contribution.comment?.let {
-            comment.text = it
+        if(contribution.comment.isNotEmpty()) {
+            comment.text = contribution.comment
             comment.visibility = View.VISIBLE
         }
+
         date.text = Util.calculateDateFromTimestamp(contribution.timestamp)
 
         val downloadFileButt = binding.DownloadFileButt
