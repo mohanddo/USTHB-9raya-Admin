@@ -7,9 +7,16 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.widget.ContentLoadingProgressBar
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 
 object FirebaseUtil {
@@ -19,28 +26,33 @@ object FirebaseUtil {
     private val database = Firebase.database
     val contributionsRef = database.getReference("contributions")
 
-    fun downloadFileToInternalStorage(context: Context, fileName: String, fileExtension: String, progressBar: ProgressBar, downloadButt: AppCompatButton) {
+    fun downloadFileToInternalStorage(context: Context, contributionId: String, fileExtension: String, progressBar: ContentLoadingProgressBar, downloadButt: AppCompatButton, openFileButton: AppCompatButton, dataStore: DataStore<Preferences>) {
 
-        val storageReference = storageRef.child("uploads/${fileName}")
+        val storageReference = storageRef.child("uploads/${contributionId}")
 
 //        val externalStorageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 //        val file = File(externalStorageDir, "${fileName}.${fileExtension}")
 
-        progressBar.visibility = View.VISIBLE
-        progressBar.progress = 0
-        downloadButt.visibility = View.GONE
 
-        val file = File(context.getExternalFilesDir(null), "${fileName}.${fileExtension}")
+        progressBar.show()
+        progressBar.progress = 0
+        downloadButt.isEnabled = false
+
+        val file = File(context.getExternalFilesDir(null), "${contributionId}.${fileExtension}")
         storageReference.getFile(file).addOnSuccessListener {
 
-            updateTheIsFileDownloadedField(fileName)
+//            updateTheIsFileDownloadedField(fileName)
+            CoroutineScope(Dispatchers.IO).launch {
+                Util.save(contributionId, "true", dataStore)
+            }
             Toast.makeText(context, "File downloaded to ${file.absolutePath}", Toast.LENGTH_LONG).show()
             Log.e("FileDownloader", "File downloaded to ${file.absolutePath}")
-            progressBar.visibility = View.GONE
+            progressBar.hide()
+            downloadButt.visibility = View.GONE
+            openFileButton.visibility = View.VISIBLE
 
         }.addOnFailureListener { exception ->
-            progressBar.visibility = View.GONE
-            downloadButt.visibility = View.VISIBLE
+            progressBar.hide()
             Toast.makeText(context, "Failed to download file, please try again.", Toast.LENGTH_SHORT).show()
             Log.e("FileDownloader", "Failed to download file: ${exception.message}")
 
@@ -52,8 +64,8 @@ object FirebaseUtil {
         }
     }
 
-    private fun updateTheIsFileDownloadedField(contributionId: String) {
-        contributionsRef.child(contributionId).child("fileDownloaded").setValue("true")
-    }
+//    private fun updateTheIsFileDownloadedField(contributionId: String) {
+//        contributionsRef.child(contributionId).child("fileDownloaded").setValue("true")
+//    }
 
 }

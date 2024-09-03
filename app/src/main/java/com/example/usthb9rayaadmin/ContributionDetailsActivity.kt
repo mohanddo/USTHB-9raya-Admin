@@ -14,10 +14,20 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.ContentLoadingProgressBar
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.usthb9rayaadmin.DataClass.Contribution
+import com.example.usthb9rayaadmin.Utils.DataStoreProvider
 import com.example.usthb9rayaadmin.Utils.FirebaseUtil.downloadFileToInternalStorage
 import com.example.usthb9rayaadmin.Utils.Util
+import com.example.usthb9rayaadmin.Utils.Util.openFileFromInternalStorage
 import com.example.usthb9rayaadmin.databinding.ActivityContributionDetailsBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class ContributionDetailsActivity : AppCompatActivity() {
@@ -30,10 +40,11 @@ class ContributionDetailsActivity : AppCompatActivity() {
     private lateinit var comment: TextView
     private lateinit var date: TextView
     private lateinit var contribution: Contribution
-    private lateinit var progressBar: ProgressBar
+    private lateinit var progressBar: ContentLoadingProgressBar
     private lateinit var openFileButt: AppCompatButton
     private lateinit var downloadFileButt: AppCompatButton
     private var ext: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityContributionDetailsBinding.inflate(layoutInflater)
@@ -54,13 +65,25 @@ class ContributionDetailsActivity : AppCompatActivity() {
         date = binding.date
         progressBar = binding.progressBar
         downloadFileButt = binding.DownloadFileButt
-
-        if(contribution.fileDownloaded == "true") {
-            downloadFileButt.visibility = View.GONE
-            openFileButt.visibility = View.VISIBLE
-        }
+        openFileButt = binding.openFileButt
 
         contribution = intent.getParcelableExtra("contribution")!!
+
+        val dataStore = DataStoreProvider.getInstance(this)
+        CoroutineScope(Dispatchers.IO).launch {
+            // Perform background task
+            val isFileDownloaded = Util.read(contribution.contributionId, dataStore) ?: "false"
+
+            // Switch to the main thread to update the UI
+            withContext(Dispatchers.Main) {
+                if (isFileDownloaded == "true") {
+                    downloadFileButt.visibility = View.GONE
+                    openFileButt.visibility = View.VISIBLE
+                }
+            }
+        }
+
+
         fullName.text = contribution.fullName
         email.text = contribution.email
         faculty.text = contribution.faculty
@@ -78,11 +101,17 @@ class ContributionDetailsActivity : AppCompatActivity() {
             ext = Util.mimeTypeToExtension(contribution.mimeType)
             val extension = ext
             if(ext != null) {
-                    downloadFileToInternalStorage(this, contribution.contributionId, extension!!, progressBar, downloadFileButt)
+                    downloadFileToInternalStorage(this, contribution.contributionId, extension!!, progressBar, downloadFileButt, openFileButt, dataStore)
             } else {
                 Toast.makeText(this, "Error finding extension", Toast.LENGTH_SHORT).show()
             }
 
+        }
+
+        binding.AcceptButt.setOnClickListener {
+            val i = Intent(this, AcceptContributionActivity::class.java)
+            i.putExtra("contribution", contribution)
+            startActivity(i)
         }
 
         binding.DenyButt.setOnClickListener {
@@ -91,31 +120,9 @@ class ContributionDetailsActivity : AppCompatActivity() {
             startActivity(i)
         }
 
-        openFileButt = binding.openFileButt
         openFileButt.setOnClickListener {
             val ext = Util.mimeTypeToExtension(contribution.mimeType)
             openFileFromInternalStorage(this, "${contribution.contributionId}.${ext}", contribution.mimeType)
         }
     }
-
-    private fun openFileFromInternalStorage(context: Context, fileName: String, mimeType: String) {
-        try {
-
-            val file = File(context.getExternalFilesDir(null), fileName)
-
-            val uri = FileProvider.getUriForFile(this, "${packageName}.provider", file)
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(uri, mimeType)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
-            startActivity(intent)
-
-        } catch (e: Exception) {
-            Toast.makeText(this, "Error opening file, please try again.", Toast.LENGTH_LONG).show()
-            Log.e("FileDownloader", "Error opening file: ${e}")
-//            Toast.makeText(this, "Error opening file: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-
 }

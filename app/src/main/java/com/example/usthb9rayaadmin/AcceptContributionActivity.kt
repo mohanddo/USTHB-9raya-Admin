@@ -62,7 +62,7 @@ class AcceptContributionActivity : AppCompatActivity() {
                             if(task.isSuccessful) {
                                 removedContributionFromDB = true
                                 if (removedFileFromStorage) {
-                                    Util.deleteFileFromInternalStorage(this, "${contribution.contributionId}.${ext}")
+                                    Util.deleteFileFromInternalStorage(this, contribution.contributionId, ext!!)
                                     val i = Intent(this, MainActivity::class.java)
                                     i.flags = FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                                     startActivity(i)
@@ -82,7 +82,7 @@ class AcceptContributionActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 removedFileFromStorage = true
                                 if(removedContributionFromDB) {
-                                    Util.deleteFileFromInternalStorage(this, "${contribution.contributionId}.${ext}")
+                                    Util.deleteFileFromInternalStorage(this, contribution.contributionId, ext!!)
                                     val i = Intent(this, MainActivity::class.java)
                                     i.flags = FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                                     startActivity(i)

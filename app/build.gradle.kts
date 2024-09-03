@@ -44,6 +44,18 @@ android {
 }
 
 dependencies {
+
+    // Preferences DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Coroutine Lifecycle Scopes
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
+
     implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

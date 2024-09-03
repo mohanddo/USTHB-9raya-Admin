@@ -207,13 +207,14 @@
                 </LinearLayout>
 
             </LinearLayout>
-            <ProgressBar
+            <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:max="100"
                 android:visibility="gone"
+                android:layout_marginHorizontal="16dp"
                 style="?android:attr/progressBarStyleHorizontal"/>
 
 

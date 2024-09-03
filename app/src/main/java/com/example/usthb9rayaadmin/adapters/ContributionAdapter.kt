@@ -11,15 +11,16 @@ import android.widget.TextView
 import com.example.usthb9rayaadmin.ContributionDetailsActivity
 import com.example.usthb9rayaadmin.DataClass.Contribution
 
+
 class ContributionAdapter(private val context: Context, private val dataSet: Array<Contribution>) :
     RecyclerView.Adapter<ContributionAdapter.ViewHolder>() {
-
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val fullName: TextView = view.findViewById(R.id.FullName)
         val faculty: TextView = view.findViewById(R.id.Faculty)
         val module: TextView = view.findViewById(R.id.Module)
         val type: TextView = view.findViewById(R.id.Type)
+
         init {
             view.setOnClickListener {
                 val i = Intent(context, ContributionDetailsActivity::class.java)
