@@ -8,7 +8,6 @@
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ContributionDetailsActivity">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -40,11 +39,9 @@
         </TextView>
 
     </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -138,7 +135,7 @@
                     android:textSize="16sp"
                     android:visibility="gone"
                     android:background="@drawable/bck_text_out_put"
-                    android:drawableStart="@drawable/ic_person"
+                    android:drawableStart="@drawable/ic_comment"
                     android:drawablePadding="8dp"
                     android:padding="8dp"
                     android:layout_gravity="center_vertical" />
@@ -216,14 +213,6 @@
                 android:visibility="gone"
                 android:layout_marginHorizontal="16dp"
                 style="?android:attr/progressBarStyleHorizontal"/>
-
-
-
-
-
         </LinearLayout>
-
     </ScrollView>
-
-
 </androidx.appcompat.widget.LinearLayoutCompat>
