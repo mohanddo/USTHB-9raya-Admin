@@ -123,7 +123,7 @@ object Util {
         return preferences[dataStoreKey]
     }
 
-    suspend fun delete(key: String, dataStore: DataStore<Preferences>) {
+    private suspend fun delete(key: String, dataStore: DataStore<Preferences>) {
         val dataStoreKey = stringPreferencesKey(key)
         dataStore.edit { settings ->
             settings.remove(dataStoreKey)

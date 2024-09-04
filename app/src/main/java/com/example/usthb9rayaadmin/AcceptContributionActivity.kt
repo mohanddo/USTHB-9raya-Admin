@@ -40,12 +40,28 @@ class AcceptContributionActivity : AppCompatActivity() {
 
         contribution = intent.getParcelableExtra("contribution")!!
 
+        val body = """
+        Hello ${contribution.fullName},
+        
+        Your contribution has been accepted! Here are the details:
+        
+        Faculty: ${contribution.faculty}
+        Module: ${contribution.module}
+        Type: ${contribution.type}
+        Date: ${Util.calculateDateFromTimestamp(contribution.timestamp)}
+        
+        Thank you for your contribution!
+        
+        Best regards,
+        USTHB 9raya Team
+    """.trimIndent()
+
         binding.SendButt.setOnClickListener {
             sendEmail(this,
-                contribution.email
-                , "Sorry",
-                binding.message.text.toString())
-
+                contribution.email,
+                "Thank you for your contribution",
+                body
+            )
         }
         val confirmButt = binding.ConfirmButt
         confirmButt.setOnClickListener {

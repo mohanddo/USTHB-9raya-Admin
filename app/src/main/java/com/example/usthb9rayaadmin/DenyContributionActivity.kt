@@ -40,11 +40,27 @@ class DenyContributionActivity : AppCompatActivity() {
 
         contribution = intent.getParcelableExtra("contribution")!!
 
+        val body = """
+        Hello ${contribution.fullName},
+        
+        Unfortunately, your contribution was not accepted. Here are the details:
+        
+        Faculty: ${contribution.faculty}
+        Module: ${contribution.module}
+        Type: ${contribution.type}
+        Date: ${Util.calculateDateFromTimestamp(contribution.timestamp)}
+        
+        We appreciate your effort and encourage you to try again with other contributions.
+        
+        Best regards,
+        USTHB 9raya Team
+        """.trimIndent()
+
         binding.SendButt.setOnClickListener {
             sendEmail(this,
                 contribution.email
-                , "Sorry",
-                binding.message.text.toString())
+                , "Contribution Not Accepted",
+                body)
 
         }
         val confirmButt = binding.ConfirmButt
