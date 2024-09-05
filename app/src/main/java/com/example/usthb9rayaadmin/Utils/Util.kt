@@ -72,12 +72,19 @@ object Util {
 
     fun sendEmail(context: Context, email: String, subject: String, body: String) {
         val emailIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "vnd.android.cursor.dir/email"
+            type = "message/rfc822"
             putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
             putExtra(Intent.EXTRA_SUBJECT, subject)
             putExtra(Intent.EXTRA_TEXT, body)
+            setPackage("com.google.android.gm")
         }
-        context.startActivity(Intent.createChooser(emailIntent, "Send email..."))
+
+        try {
+            context.startActivity(Intent.createChooser(emailIntent, "Send email..."))
+        } catch (e: Exception) {
+            Toast.makeText(context, "Gmail app is not installed", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     fun alertDialog(context: Context, title: String, message: String, positiveButtonMessage: String,
