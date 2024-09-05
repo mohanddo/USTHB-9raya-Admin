@@ -15,10 +15,7 @@
         android:theme="@style/Theme.USTHB9rayaAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".AcceptContributionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DenyContributionActivity"
+            android:name=".ConfirmContributionActivity"
             android:exported="false" />
         <activity
             android:name=".ContributionDetailsActivity"

@@ -1,23 +1,16 @@
 package com.example.usthb9rayaadmin
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.ContentLoadingProgressBar
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.example.usthb9rayaadmin.DataClass.Contribution
 import com.example.usthb9rayaadmin.Utils.DataStoreProvider
 import com.example.usthb9rayaadmin.Utils.FirebaseUtil.downloadFileToInternalStorage
@@ -28,7 +21,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 
 class ContributionDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityContributionDetailsBinding
@@ -109,13 +101,7 @@ class ContributionDetailsActivity : AppCompatActivity() {
         }
 
         binding.AcceptButt.setOnClickListener {
-            val i = Intent(this, AcceptContributionActivity::class.java)
-            i.putExtra("contribution", contribution)
-            startActivity(i)
-        }
-
-        binding.DenyButt.setOnClickListener {
-            val i = Intent(this, DenyContributionActivity::class.java)
+            val i = Intent(this, ConfirmContributionActivity::class.java)
             i.putExtra("contribution", contribution)
             startActivity(i)
         }

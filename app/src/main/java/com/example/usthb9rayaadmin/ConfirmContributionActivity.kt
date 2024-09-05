@@ -19,7 +19,7 @@ import com.example.usthb9rayaadmin.Utils.Util.sendEmail
 import com.example.usthb9rayaadmin.databinding.ActivityAcceptContributionBinding
 
 
-class AcceptContributionActivity : AppCompatActivity() {
+class ConfirmContributionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAcceptContributionBinding
     private lateinit var contribution: Contribution
     private var removedContributionFromDB = false
