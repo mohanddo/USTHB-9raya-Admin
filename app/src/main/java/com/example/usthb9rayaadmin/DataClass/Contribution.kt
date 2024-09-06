@@ -9,10 +9,11 @@ data class Contribution(val fullName: String = "",
                         val module: String = "",
                         val type: String = "",
                         val comment: String = "",
-                        val fileUrl: String = "",
+                        val fileUrls: List<String> = emptyList(),
+                        val fileNames: List<String> = emptyList(),
                         val contributionId: String = "",
+                        val filesSize: Long = 0,
                         val timestamp: Long = System.currentTimeMillis(),
-    val mimeType: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         fullName = parcel.readString() ?: "",
@@ -21,10 +22,11 @@ data class Contribution(val fullName: String = "",
         module = parcel.readString() ?: "",
         type = parcel.readString() ?: "",
         comment = parcel.readString() ?: "",
-        fileUrl = parcel.readString() ?: "",
+        fileUrls = parcel.createStringArrayList() ?: emptyList(),
+        fileNames = parcel.createStringArrayList() ?: emptyList(),
         contributionId = parcel.readString() ?: "",
+        filesSize = parcel.readLong(),
         timestamp = parcel.readLong(),
-        mimeType = parcel.readString() ?: ""
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -34,10 +36,11 @@ data class Contribution(val fullName: String = "",
         parcel.writeString(module)
         parcel.writeString(type)
         parcel.writeString(comment)
-        parcel.writeString(fileUrl)
+        parcel.writeStringList(fileUrls)
+        parcel.writeStringList(fileNames)
         parcel.writeString(contributionId)
+        parcel.writeLong(filesSize)
         parcel.writeLong(timestamp)
-        parcel.writeString(mimeType)
     }
 
     override fun describeContents(): Int {

@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.startActivity
@@ -37,38 +38,44 @@ object Util {
         return formattedDate
     }
 
-    fun mimeTypeToExtension(mimeType: String): String? {
-        return when (mimeType) {
-            "text/plain" -> "txt"
-            "text/html" -> "html"
-            "text/css" -> "css"
-            "text/javascript" -> "js"
-            "image/jpeg" -> "jpg"
-            "image/png" -> "png"
-            "image/gif" -> "gif"
-            "image/svg+xml" -> "svg"
-            "image/webp" -> "webp"
-            "audio/mpeg" -> "mp3"
-            "audio/ogg" -> "ogg"
-            "audio/wav" -> "wav"
-            "video/mp4" -> "mp4"
-            "video/webm" -> "webm"
-            "video/ogg" -> "ogv"
-            "application/pdf" -> "pdf"
-            "application/msword" -> "doc"
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" -> "docx"
-            "application/vnd.ms-excel" -> "xls"
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" -> "xlsx"
-            "application/vnd.ms-powerpoint" -> "ppt"
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation" -> "pptx"
-            "application/zip" -> "zip"
-            "application/x-rar-compressed" -> "rar"
-            "application/json" -> "json"
-            "application/xml" -> "xml"
-            "application/x-www-form-urlencoded" -> "urlencoded"
+    fun extensionToMimeType(extension: String): String? {
+        return when (extension.lowercase()) {
+            "txt" -> "text/plain"
+            "html" -> "text/html"
+            "css" -> "text/css"
+            "js" -> "text/javascript"
+            "jpg", "jpeg" -> "image/jpeg"
+            "png" -> "image/png"
+            "gif" -> "image/gif"
+            "svg" -> "image/svg+xml"
+            "webp" -> "image/webp"
+            "mp3" -> "audio/mpeg"
+            "ogg" -> "audio/ogg"
+            "wav" -> "audio/wav"
+            "mp4" -> "video/mp4"
+            "webm" -> "video/webm"
+            "ogv" -> "video/ogg"
+            "pdf" -> "application/pdf"
+            "doc" -> "application/msword"
+            "docx" -> "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            "xls" -> "application/vnd.ms-excel"
+            "xlsx" -> "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            "ppt" -> "application/vnd.ms-powerpoint"
+            "pptx" -> "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            "zip" -> "application/zip"
+            "rar" -> "application/x-rar-compressed"
+            "json" -> "application/json"
+            "xml" -> "application/xml"
+            "urlencoded" -> "application/x-www-form-urlencoded"
             else -> null
         }
     }
+
+    fun getFileExtension(fileName: String): String {
+        val dotIndex = fileName.lastIndexOf('.')
+        return fileName.substring(dotIndex + 1)
+    }
+
 
     fun sendEmail(context: Context, email: String, subject: String, body: String) {
         val emailIntent = Intent(Intent.ACTION_SEND).apply {
@@ -106,15 +113,17 @@ object Util {
 
     }
 
-    fun deleteFileFromInternalStorage(context: Context, contributionId: String, ext: String): Boolean {
+    fun deleteFilesFromInternalStorage(context: Context, contributionId: String, fileNames: List<String>) {
+
+        for (fileName in fileNames) {
+            val file = File(context.getExternalFilesDir(null), fileName)
+            file.delete()
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
             delete(contributionId, DataStoreProvider.getInstance(context))
         }
 
-        val file = File(context.getExternalFilesDir(null), "${contributionId}.${ext}")
-        Log.e("FileExists", file.exists().toString())
-        return file.delete()
     }
 
     suspend fun save(key: String, value: String, dataStore: DataStore<Preferences>) {
@@ -154,6 +163,19 @@ object Util {
             Toast.makeText(context, "Error opening file, please try again.", Toast.LENGTH_LONG).show()
             Log.e("FileDownloader", "Error opening file: ${e}")
         }
+    }
+
+    fun singleChoiceDialog(context: Context, options: Array<String>, title: String, textView: TextView) {
+
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(title)
+
+        builder.setSingleChoiceItems(options, -1) { dialogInterface, which ->
+            textView.setText(options[which])
+            dialogInterface.dismiss()
+        }
+
+        builder.show()
     }
 
 }

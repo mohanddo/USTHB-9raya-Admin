@@ -154,6 +154,20 @@
                     android:padding="8dp"
                     android:layout_gravity="center_vertical" />
 
+                <TextView
+                    android:id="@+id/fileName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginVertical="8dp"
+                    android:background="@drawable/bck_text_out_put"
+                    android:drawableStart="@drawable/ic_time"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"
+                    android:hint="File Name"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -175,7 +189,7 @@
                         android:id="@+id/DownloadFileButt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Download file"
+                        android:text="Download files"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         android:background="@drawable/bck_butt"
@@ -201,10 +215,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:max="100"
                 android:visibility="gone"
                 android:layout_marginHorizontal="16dp"
                 style="?android:attr/progressBarStyleHorizontal"/>
+
         </LinearLayout>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

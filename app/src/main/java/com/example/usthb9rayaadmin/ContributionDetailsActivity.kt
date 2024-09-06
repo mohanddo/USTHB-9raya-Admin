@@ -2,6 +2,7 @@ package com.example.usthb9rayaadmin
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -15,7 +16,10 @@ import com.example.usthb9rayaadmin.DataClass.Contribution
 import com.example.usthb9rayaadmin.Utils.DataStoreProvider
 import com.example.usthb9rayaadmin.Utils.FirebaseUtil.downloadFileToInternalStorage
 import com.example.usthb9rayaadmin.Utils.Util
+import com.example.usthb9rayaadmin.Utils.Util.extensionToMimeType
+import com.example.usthb9rayaadmin.Utils.Util.getFileExtension
 import com.example.usthb9rayaadmin.Utils.Util.openFileFromInternalStorage
+import com.example.usthb9rayaadmin.Utils.Util.singleChoiceDialog
 import com.example.usthb9rayaadmin.databinding.ActivityContributionDetailsBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,11 +35,11 @@ class ContributionDetailsActivity : AppCompatActivity() {
     private lateinit var type: TextView
     private lateinit var comment: TextView
     private lateinit var date: TextView
+    private lateinit var fileName: TextView
     private lateinit var contribution: Contribution
     private lateinit var progressBar: ContentLoadingProgressBar
     private lateinit var openFileButt: AppCompatButton
     private lateinit var downloadFileButt: AppCompatButton
-    private var ext: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +59,7 @@ class ContributionDetailsActivity : AppCompatActivity() {
         type = binding.type
         comment = binding.comment
         date = binding.date
+        fileName = binding.fileName
         progressBar = binding.progressBar
         downloadFileButt = binding.DownloadFileButt
         openFileButt = binding.openFileButt
@@ -86,18 +91,15 @@ class ContributionDetailsActivity : AppCompatActivity() {
             comment.visibility = View.VISIBLE
         }
 
+        Log.e("Timestamp", contribution.timestamp.toString())
         date.text = Util.calculateDateFromTimestamp(contribution.timestamp)
 
+        fileName.setOnClickListener {
+            singleChoiceDialog(this, contribution.fileNames.toTypedArray(), "Choose a file", fileName)
+        }
+
         downloadFileButt.setOnClickListener {
-
-            ext = Util.mimeTypeToExtension(contribution.mimeType)
-            val extension = ext
-            if(ext != null) {
-                    downloadFileToInternalStorage(this, contribution.contributionId, extension!!, progressBar, downloadFileButt, openFileButt, dataStore)
-            } else {
-                Toast.makeText(this, "Error finding extension", Toast.LENGTH_SHORT).show()
-            }
-
+            downloadFileToInternalStorage(this, contribution.fileNames, contribution.contributionId, contribution.filesSize, progressBar, downloadFileButt, openFileButt, dataStore)
         }
 
         binding.AcceptButt.setOnClickListener {
@@ -107,8 +109,16 @@ class ContributionDetailsActivity : AppCompatActivity() {
         }
 
         openFileButt.setOnClickListener {
-            val ext = Util.mimeTypeToExtension(contribution.mimeType)
-            openFileFromInternalStorage(this, "${contribution.contributionId}.${ext}", contribution.mimeType)
+
+            if(fileName.text.isEmpty()) {
+                Toast.makeText(this, "Please choose a file first", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else {
+                val fileName = fileName.text.toString()
+                val extension = getFileExtension(fileName)
+                val mimeType = extensionToMimeType(extension)
+                openFileFromInternalStorage(this, fileName, mimeType!!)
+            }
         }
     }
 }
