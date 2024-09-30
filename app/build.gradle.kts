@@ -47,6 +47,7 @@ dependencies {
 
     // Preferences DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("com.google.firebase:firebase-auth")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
