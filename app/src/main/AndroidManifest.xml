@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <queries>
+        <!-- Allow the app to query for YouTube -->
+        <package android:name="com.google.android.youtube" />
+    </queries>
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application

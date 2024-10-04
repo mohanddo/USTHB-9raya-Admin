@@ -19,6 +19,7 @@ import com.example.usthb9rayaadmin.Utils.Util
 import com.example.usthb9rayaadmin.Utils.Util.extensionToMimeType
 import com.example.usthb9rayaadmin.Utils.Util.getFileExtension
 import com.example.usthb9rayaadmin.Utils.Util.openFileFromInternalStorage
+import com.example.usthb9rayaadmin.Utils.Util.openYouTubeLink
 import com.example.usthb9rayaadmin.Utils.Util.singleChoiceDialog
 import com.example.usthb9rayaadmin.databinding.ActivityContributionDetailsBinding
 import kotlinx.coroutines.CoroutineScope
@@ -35,11 +36,13 @@ class ContributionDetailsActivity : AppCompatActivity() {
     private lateinit var type: TextView
     private lateinit var comment: TextView
     private lateinit var date: TextView
+    private lateinit var youtubeLink: TextView
     private lateinit var fileName: TextView
     private lateinit var contribution: Contribution
     private lateinit var progressBar: ContentLoadingProgressBar
     private lateinit var openFileButt: AppCompatButton
     private lateinit var downloadFileButt: AppCompatButton
+    private lateinit var openLinkButt: AppCompatButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,10 +62,12 @@ class ContributionDetailsActivity : AppCompatActivity() {
         type = binding.type
         comment = binding.comment
         date = binding.date
+        youtubeLink = binding.youtubeLink
         fileName = binding.fileName
         progressBar = binding.progressBar
         downloadFileButt = binding.DownloadFileButt
         openFileButt = binding.openFileButt
+        openLinkButt = binding.openLinkButt
 
         contribution = intent.getParcelableExtra("contribution")!!
 
@@ -86,20 +91,35 @@ class ContributionDetailsActivity : AppCompatActivity() {
         faculty.text = contribution.faculty
         module.text = contribution.module
         type.text = contribution.type
-        if(contribution.comment.isNotEmpty()) {
+        contribution.comment?.let {
             comment.text = contribution.comment
             comment.visibility = View.VISIBLE
         }
 
+
         Log.e("Timestamp", contribution.timestamp.toString())
         date.text = Util.calculateDateFromTimestamp(contribution.timestamp)
 
-        fileName.setOnClickListener {
-            singleChoiceDialog(this, contribution.fileNames.toTypedArray(), "Choose a file", fileName)
+        contribution.fileNames?.let { fileNames ->
+
+            fileName.setOnClickListener {
+                singleChoiceDialog(this, fileNames.toTypedArray(), "Choose a file", fileName)
+            }
+
+            downloadFileButt.visibility = View.VISIBLE
+            downloadFileButt.setOnClickListener {
+                downloadFileToInternalStorage(this, fileNames, contribution.contributionId, contribution.filesSize, progressBar, downloadFileButt, openFileButt, dataStore)
+            }
         }
 
-        downloadFileButt.setOnClickListener {
-            downloadFileToInternalStorage(this, contribution.fileNames, contribution.contributionId, contribution.filesSize, progressBar, downloadFileButt, openFileButt, dataStore)
+        contribution.youtubeLink?.let { youtubeLinkString ->
+
+            youtubeLink.visibility = View.VISIBLE
+
+            openLinkButt.visibility = View.VISIBLE
+            openLinkButt.setOnClickListener {
+                openYouTubeLink(this, youtubeLinkString)
+            }
         }
 
         binding.AcceptButt.setOnClickListener {

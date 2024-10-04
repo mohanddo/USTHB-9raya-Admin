@@ -8,12 +8,13 @@ data class Contribution(val fullName: String = "",
                         val faculty: String = "",
                         val module: String = "",
                         val type: String = "",
-                        val comment: String = "",
-                        val fileUrls: List<String> = emptyList(),
-                        val fileNames: List<String> = emptyList(),
+                        val comment: String? = null,
+                        val fileUrls: List<String>? = null,
+                        val fileNames: List<String>? = null,
                         val contributionId: String = "",
                         val filesSize: Long = 0,
                         val timestamp: Long = System.currentTimeMillis(),
+    val youtubeLink: String? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         fullName = parcel.readString() ?: "",
@@ -21,12 +22,13 @@ data class Contribution(val fullName: String = "",
         faculty = parcel.readString() ?: "",
         module = parcel.readString() ?: "",
         type = parcel.readString() ?: "",
-        comment = parcel.readString() ?: "",
-        fileUrls = parcel.createStringArrayList() ?: emptyList(),
-        fileNames = parcel.createStringArrayList() ?: emptyList(),
+        comment = parcel.readString(),
+        fileUrls = parcel.createStringArrayList(),
+        fileNames = parcel.createStringArrayList(),
         contributionId = parcel.readString() ?: "",
         filesSize = parcel.readLong(),
         timestamp = parcel.readLong(),
+        youtubeLink = parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -41,6 +43,7 @@ data class Contribution(val fullName: String = "",
         parcel.writeString(contributionId)
         parcel.writeLong(filesSize)
         parcel.writeLong(timestamp)
+        parcel.writeString(youtubeLink)
     }
 
     override fun describeContents(): Int {

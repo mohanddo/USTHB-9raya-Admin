@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -39,21 +40,27 @@ class ConfirmContributionActivity : AppCompatActivity() {
         contribution = intent.getParcelableExtra("contribution")!!
 
         val body = """
-        Hello ${contribution.fullName},
-        
-        Your contribution has been confirmed! Here are the details:
-        
-        Faculty: ${contribution.faculty}
-        Module: ${contribution.module}
-        Type: ${contribution.type}
-        Files: ${contribution.fileNames.joinToString(", ")}
-        Date: ${Util.calculateDateFromTimestamp(contribution.timestamp)}
-        
-        Thank you for your contribution!
-        
-        Best regards,
-        USTHB 9raya Team
-    """.trimIndent()
+    Bonjour ${contribution.fullName},
+
+    Votre contribution a été confirmée ! Voici les détails :
+
+    Faculté : ${contribution.faculty}
+    
+    Module : ${contribution.module}
+    
+    Type : ${contribution.type}
+    
+    Fichiers : ${contribution.fileNames?.joinToString(", ") ?: "N/A"}
+    
+    Lien YouTube : ${contribution.youtubeLink ?: "N/A"}
+    
+    Date : ${Util.calculateDateFromTimestamp(contribution.timestamp)}
+
+    Merci pour votre contribution !
+
+    Cordialement,
+    L'équipe USTHB 9raya
+""".trimIndent()
 
         binding.SendButt.setOnClickListener {
             sendEmail(this,
@@ -62,29 +69,41 @@ class ConfirmContributionActivity : AppCompatActivity() {
                 body
             )
         }
-        val confirmButt = binding.ConfirmButt
-        confirmButt.setOnClickListener {
+        val confirmFilesButt = binding.ConfirmFilesButt
 
-            alertDialog(this, "Accept contribution", "Are you sure you want to accept this contribution?",
-                "Yes", "No", {
-                    confirmButt.isEnabled = false
-                    progressBar.show()
+        contribution.fileNames?.let {
+            confirmFilesButt.visibility = View.VISIBLE
+            confirmFilesButt.setOnClickListener {
 
-                    FirebaseUtil.deleteContributionFromFirebase(contribution.contributionId, {
-                        Util.deleteFilesFromInternalStorage(this, contribution.contributionId, contribution.fileNames)
-                        val i = Intent(this, MainActivity::class.java)
-                        i.flags = FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(i)
-                    }, {
-                        confirmButt.isEnabled = true
-                        progressBar.hide()
-                        Toast.makeText(this, "There was an error please try again.", Toast.LENGTH_SHORT).show()
+                alertDialog(this, "Accept contribution", "Are you sure you want to accept this contribution?",
+                    "Yes", "No", {
+                        confirmFilesButt.isEnabled = false
+                        progressBar.show()
+
+                        contribution.fileNames?.let { fileNames ->
+                            FirebaseUtil.deleteContributionFromFirebase(contribution.contributionId, {
+                                Util.deleteFilesFromInternalStorage(this, contribution.contributionId, fileNames)
+                                val i = Intent(this, MainActivity::class.java)
+                                i.flags = FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(i)
+                            }, {
+                                confirmFilesButt.isEnabled = true
+                                progressBar.hide()
+                                Toast.makeText(this, "There was an error please try again.", Toast.LENGTH_SHORT).show()
+                            })
+                        }
+                    }, { dialog ->
+                        dialog.dismiss()
                     })
-
-
-                }, { dialog ->
-                    dialog.dismiss()
-                })
+            }
+        }
+        val confirmYoutubeLinkButt = binding.ConfirmYoutubeLinkButt
+        contribution.youtubeLink?.let {
+            confirmYoutubeLinkButt.visibility = View.VISIBLE
+            confirmYoutubeLinkButt.setOnClickListener {
+                confirmYoutubeLinkButt.isEnabled = false
+                progressBar.show()
+            }
         }
 
     }

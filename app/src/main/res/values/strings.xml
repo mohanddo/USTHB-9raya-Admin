@@ -42,4 +42,10 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="download_files">Download files</string>
+    <string name="open_link">Open Link</string>
+    <string name="confirm_contribution">Confirm contribution</string>
+    <string name="open_file">Open file</string>
+    <string name="confirm_files">Confirm Files</string>
+    <string name="confirm_youtube_link">Confirm Youtube Link</string>
 </resources>

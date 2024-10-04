@@ -4,12 +4,11 @@ package com.example.usthb9rayaadmin.Utils
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
-import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -161,7 +160,7 @@ object Util {
 
         } catch (e: Exception) {
             Toast.makeText(context, "Error opening file, please try again.", Toast.LENGTH_LONG).show()
-            Log.e("FileDownloader", "Error opening file: ${e}")
+            Log.e("FileDownloader", "Error opening file: $e")
         }
     }
 
@@ -171,11 +170,23 @@ object Util {
         builder.setTitle(title)
 
         builder.setSingleChoiceItems(options, -1) { dialogInterface, which ->
-            textView.setText(options[which])
+            textView.text = options[which]
             dialogInterface.dismiss()
         }
 
         builder.show()
+    }
+
+    fun openYouTubeLink(context: Context, url: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        intent.setPackage("com.google.android.youtube")
+        if (intent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(intent)
+        } else {
+            intent.setPackage(null)
+            context.startActivity(intent)
+        }
     }
 
 }
