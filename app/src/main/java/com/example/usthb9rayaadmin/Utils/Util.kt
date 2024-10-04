@@ -14,14 +14,22 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.example.usthb9rayaadmin.DataClass.Youtube
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileWriter
+import java.io.IOException
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import com.google.gson.Gson
+
 
 object Util {
 
@@ -177,16 +185,70 @@ object Util {
         builder.show()
     }
 
-    fun openYouTubeLink(context: Context, url: String) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        intent.setPackage("com.google.android.youtube")
-        if (intent.resolveActivity(context.packageManager) != null) {
-            context.startActivity(intent)
-        } else {
-            intent.setPackage(null)
-            context.startActivity(intent)
-        }
+}
+
+fun downloadFileFromFirebase(localFile: File, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    val storageRef = FirebaseStorage.getInstance().reference.child("youtube_videos.json")
+
+    storageRef.getFile(localFile).addOnSuccessListener {
+        Log.d("FirebaseSync", "File downloaded successfully: ${localFile.absolutePath}")
+        onSuccess()
+    }.addOnFailureListener { exception ->
+        Log.e("FirebaseSync", "Failed to download file from Firebase: ${exception.message}")
+        onFailure(exception)
+    }
+}
+
+
+fun uploadFileToFirebase(localFile: File, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    val storageRef = FirebaseStorage.getInstance().reference.child("youtube_videos.json")
+    val uri = Uri.fromFile(localFile)
+
+    storageRef.putFile(uri).addOnSuccessListener {
+        Log.d("FirebaseSync", "File uploaded to Firebase successfully.")
+        onSuccess()
+    }.addOnFailureListener { exception ->
+        Log.e("FirebaseSync", "Failed to upload file to Firebase: ${exception.message}")
+        onFailure(exception)
+    }
+}
+
+fun addElementToLocalFile(localFile: File, newElement: Youtube) {
+
+    val dataList: MutableList<Youtube> = if (localFile.exists()) {
+        val jsonContent = localFile.readText()
+        val listType: Type = object : TypeToken<MutableList<Youtube>>() {}.type
+        Gson().fromJson(jsonContent, listType) ?: mutableListOf()
+    } else {
+        mutableListOf()
     }
 
+    dataList.add(newElement)
+
+    val updatedJson = Gson().toJson(dataList)
+    try {
+        val writer = FileWriter(localFile)
+        writer.write(updatedJson)
+        writer.close()
+        Log.d("FirebaseSync", "Local file updated successfully.")
+    } catch (e: IOException) {
+        e.printStackTrace()
+        Log.e("FirebaseSync", "Failed to update local file: ${e.message}")
+    }
 }
+
+
+fun openYouTubeLink(context: Context, url: String) {
+    val intent = Intent(Intent.ACTION_VIEW)
+    intent.data = Uri.parse(url)
+    intent.setPackage("com.google.android.youtube")
+    if (intent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(intent)
+    } else {
+        intent.setPackage(null)
+        context.startActivity(intent)
+    }
+}
+
+}
+

@@ -48,4 +48,7 @@
     <string name="open_file">Open file</string>
     <string name="confirm_files">Confirm Files</string>
     <string name="confirm_youtube_link">Confirm Youtube Link</string>
+    <string name="filter_name">filter name</string>
+    <string name="link">link</string>
+    <string name="name">name</string>
 </resources>

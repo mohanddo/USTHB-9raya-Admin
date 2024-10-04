@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -13,17 +12,20 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.ContentLoadingProgressBar
 import com.example.usthb9rayaadmin.DataClass.Contribution
+import com.example.usthb9rayaadmin.DataClass.Youtube
 import com.example.usthb9rayaadmin.Utils.FirebaseUtil
 import com.example.usthb9rayaadmin.Utils.Util
 import com.example.usthb9rayaadmin.Utils.Util.alertDialog
 import com.example.usthb9rayaadmin.Utils.Util.sendEmail
 import com.example.usthb9rayaadmin.databinding.ActivityConfirmContributionBinding
+import java.io.File
 
 
 class ConfirmContributionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConfirmContributionBinding
     private lateinit var contribution: Contribution
     private lateinit var progressBar: ContentLoadingProgressBar
+    private lateinit var localFile: File
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityConfirmContributionBinding.inflate(layoutInflater)
@@ -40,27 +42,21 @@ class ConfirmContributionActivity : AppCompatActivity() {
         contribution = intent.getParcelableExtra("contribution")!!
 
         val body = """
-    Bonjour ${contribution.fullName},
-
-    Votre contribution a été confirmée ! Voici les détails :
-
-    Faculté : ${contribution.faculty}
-    
-    Module : ${contribution.module}
-    
-    Type : ${contribution.type}
-    
-    Fichiers : ${contribution.fileNames?.joinToString(", ") ?: "N/A"}
-    
-    Lien YouTube : ${contribution.youtubeLink ?: "N/A"}
-    
-    Date : ${Util.calculateDateFromTimestamp(contribution.timestamp)}
-
-    Merci pour votre contribution !
-
-    Cordialement,
-    L'équipe USTHB 9raya
-""".trimIndent()
+        Hello ${contribution.fullName},
+        
+        Your contribution has been confirmed! Here are the details:
+        
+        Faculty: ${contribution.faculty}
+        Module: ${contribution.module}
+        Type: ${contribution.type}
+        Files: ${contribution.fileNames.joinToString(", ")}
+        Date: ${Util.calculateDateFromTimestamp(contribution.timestamp)}
+        
+        Thank you for your contribution!
+        
+        Best regards,
+        USTHB 9raya Team
+    """.trimIndent()
 
         binding.SendButt.setOnClickListener {
             sendEmail(this,
@@ -106,6 +102,40 @@ class ConfirmContributionActivity : AppCompatActivity() {
             }
         }
 
+
+        localFile = File(filesDir, "youtube_videos.json")
+
+        Util.downloadFileFromFirebase(localFile, {
+
+            Toast.makeText(this, "File downloaded from Firebase", Toast.LENGTH_SHORT).show()
+
+        }, { exception ->
+
+            Toast.makeText(this, "Failed to download file: ${exception.message}", Toast.LENGTH_LONG).show()
+        })
+
+        binding.ConfirmButtYoutube.setOnClickListener {
+            val inputTextName = binding.YoutubeName.text.toString()
+            val inputTextLink = binding.YoutubeLink.text.toString()
+            val inputTextFilter = binding.YoutubeFilterName.text.toString()
+
+            if (inputTextName.isNotEmpty() && inputTextLink.isNotEmpty() && inputTextFilter.isNotEmpty()) {
+
+                val newElement = Youtube( videoName =  inputTextName, youTubeLink =  inputTextLink, filterTitle =  inputTextFilter)
+
+                Util.addElementToLocalFile(localFile, newElement)
+
+                Util.uploadFileToFirebase(localFile, {
+
+                    Toast.makeText(this, "File uploaded to Firebase", Toast.LENGTH_SHORT).show()
+                }, { exception ->
+
+                    Toast.makeText(this, "Failed to upload file: ${exception.message}", Toast.LENGTH_LONG).show()
+                })
+            } else {
+                Toast.makeText(this, "Input cannot be empty", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 

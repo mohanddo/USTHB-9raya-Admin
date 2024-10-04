@@ -13,6 +13,7 @@ import com.example.usthb9rayaadmin.DataClass.Contribution
 import com.example.usthb9rayaadmin.Utils.FirebaseUtil.contributionsRef
 import com.example.usthb9rayaadmin.adapters.ContributionAdapter
 import com.example.usthb9rayaadmin.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -21,11 +22,18 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        auth = FirebaseAuth.getInstance()
+        if (auth.currentUser == null) {
+            signInAnonymously()
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -41,7 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         val contributionsListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-
                 progressBar.hide()
 
                 val contributionsList = mutableListOf<Contribution>()
@@ -58,6 +65,19 @@ class MainActivity : AppCompatActivity() {
                 Log.w("Database Error", "loadPost:onCancelled", databaseError.toException())
             }
         }
-            contributionsRef.addValueEventListener(contributionsListener)
+        contributionsRef.addValueEventListener(contributionsListener)
+    }
+
+    private fun signInAnonymously() {
+        auth.signInAnonymously()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+
+                    val user = auth.currentUser
+
+                } else {
+                    Log.w("AnonymousAuth", "signInAnonymously:failure", task.exception)
+                }
+            }
     }
 }
