@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -32,6 +33,16 @@ import com.google.gson.Gson
 
 
 object Util {
+
+    fun isEditTextEmpty(edittext: EditText) : Boolean {
+        val text = edittext.text.toString().trim()
+        if (text.isEmpty()) {
+            edittext.error = "Please fill out this field"
+            edittext.requestFocus()
+            return true
+        }
+        return false
+    }
 
     fun calculateDateFromTimestamp(timestamp: Long): String {
 
@@ -185,22 +196,20 @@ object Util {
         builder.show()
     }
 
+    fun downloadFileFromFirebase(context: Context, localFile: File, onSuccess: () -> Unit) {
+        val storageRef = FirebaseStorage.getInstance().reference.child("youtube_videos.json")
+
+        storageRef.getFile(localFile).addOnSuccessListener {
+            Log.d("FirebaseSync", "File downloaded successfully: ${localFile.absolutePath}")
+            Toast.makeText(context, "File downloaded from Firebase", Toast.LENGTH_SHORT).show()
+            onSuccess()
+        }.addOnFailureListener { exception ->
+            Log.e("FirebaseSync", "Failed to download file from Firebase: ${exception.message}")
+            downloadFileFromFirebase(context, localFile, onSuccess)
+        }
 }
 
-fun downloadFileFromFirebase(localFile: File, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
-    val storageRef = FirebaseStorage.getInstance().reference.child("youtube_videos.json")
-
-    storageRef.getFile(localFile).addOnSuccessListener {
-        Log.d("FirebaseSync", "File downloaded successfully: ${localFile.absolutePath}")
-        onSuccess()
-    }.addOnFailureListener { exception ->
-        Log.e("FirebaseSync", "Failed to download file from Firebase: ${exception.message}")
-        onFailure(exception)
-    }
-}
-
-
-fun uploadFileToFirebase(localFile: File, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    fun uploadFileToFirebase(localFile: File, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
     val storageRef = FirebaseStorage.getInstance().reference.child("youtube_videos.json")
     val uri = Uri.fromFile(localFile)
 
@@ -213,32 +222,34 @@ fun uploadFileToFirebase(localFile: File, onSuccess: () -> Unit, onFailure: (Exc
     }
 }
 
-fun addElementToLocalFile(localFile: File, newElement: Youtube) {
+    fun addElementToLocalFile(context: Context, localFile: File, newElement: Youtube, onFailure: () -> Unit) {
 
-    val dataList: MutableList<Youtube> = if (localFile.exists()) {
+        val dataList: MutableList<Youtube> = if (localFile.exists()) {
         val jsonContent = localFile.readText()
         val listType: Type = object : TypeToken<MutableList<Youtube>>() {}.type
         Gson().fromJson(jsonContent, listType) ?: mutableListOf()
-    } else {
-        mutableListOf()
-    }
+        } else {
+            mutableListOf()
+        }
 
-    dataList.add(newElement)
+        dataList.add(newElement)
 
-    val updatedJson = Gson().toJson(dataList)
-    try {
-        val writer = FileWriter(localFile)
-        writer.write(updatedJson)
-        writer.close()
-        Log.d("FirebaseSync", "Local file updated successfully.")
-    } catch (e: IOException) {
-        e.printStackTrace()
-        Log.e("FirebaseSync", "Failed to update local file: ${e.message}")
-    }
+        val updatedJson = Gson().toJson(dataList)
+        try {
+            val writer = FileWriter(localFile)
+            writer.write(updatedJson)
+            writer.close()
+            Log.d("FirebaseSync", "Local file updated successfully.")
+        } catch (e: IOException) {
+            e.printStackTrace()
+            onFailure()
+            Toast.makeText(context, "There was an error, please try again", Toast.LENGTH_LONG).show()
+            Log.e("FirebaseSync", "Failed to update local file: ${e.message}")
+        }
 }
 
 
-fun openYouTubeLink(context: Context, url: String) {
+    fun openYouTubeLink(context: Context, url: String) {
     val intent = Intent(Intent.ACTION_VIEW)
     intent.data = Uri.parse(url)
     intent.setPackage("com.google.android.youtube")

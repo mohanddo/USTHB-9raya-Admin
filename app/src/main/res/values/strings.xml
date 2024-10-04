@@ -51,4 +51,5 @@
     <string name="filter_name">filter name</string>
     <string name="link">link</string>
     <string name="name">name</string>
+    <string name="send_email">Send Email</string>
 </resources>

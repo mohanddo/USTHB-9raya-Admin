@@ -36,7 +36,8 @@
                 android:background="@drawable/bck_admin_input"
                 android:padding="8dp"
                 android:lineSpacingExtra="4dp"
-                android:lineSpacingMultiplier="1.2" />
+                android:lineSpacingMultiplier="1.2"
+                android:visibility="gone"/>
 
             <EditText
                 android:id="@+id/YoutubeLink"
@@ -49,9 +50,10 @@
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp"
                 android:background="@drawable/bck_admin_input"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:visibility="gone"/>
 
-            <TextView
+            <EditText
                 android:id="@+id/YoutubeFilterName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,13 +66,15 @@
                 android:minHeight="48dp"
                 android:background="@drawable/bck_admin_input"
                 android:padding="8dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:visibility="gone"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/SendButt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Send Email"
+                android:text="@string/send_email"
+                android:visibility="gone"
                 android:layout_marginVertical="16dp"
                 android:background="@drawable/bck_butt_accept" />
 
@@ -78,9 +82,10 @@
                 android:id="@+id/ConfirmButtYoutube"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Confirm Youtube"
+                android:text="Confirm Youtube Link"
                 android:layout_marginVertical="16dp"
-                android:background="@drawable/bck_youtube" />
+                android:background="@drawable/bck_youtube"
+                android:visibility="gone"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/ConfirmFilesButt"
@@ -91,6 +96,12 @@
                 android:background="@drawable/bck_deny"
                 android:visibility="gone"/>
 
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/ProgressBar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/ConfirmYoutubeLinkButt"
@@ -100,10 +111,9 @@
                 android:layout_marginVertical="16dp"
                 android:background="@drawable/bck_deny"
                 android:visibility="gone"/>
-                android:background="@drawable/bck_deny" />
 
             <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/ProgressBar"
+                android:id="@+id/ProgressBarYoutube"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
