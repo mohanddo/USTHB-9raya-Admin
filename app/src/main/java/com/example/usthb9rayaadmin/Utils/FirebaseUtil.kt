@@ -112,6 +112,7 @@ object FirebaseUtil {
                 onFailure()
                 Log.e("ContributionDeletion", "Storage deletion failed: ${storageError.message}")
             }
+
         }.addOnFailureListener { listError ->
             // Handle error in listing files
             if (listError is StorageException && listError.errorCode == StorageException.ERROR_OBJECT_NOT_FOUND) {

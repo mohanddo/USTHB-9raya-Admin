@@ -1,22 +1,22 @@
 {
   "project_info": {
-    "project_number": "734130186654",
-    "firebase_url": "https://usthb-9raya-default-rtdb.firebaseio.com",
-    "project_id": "usthb-9raya",
-    "storage_bucket": "usthb-9raya.appspot.com"
+    "project_number": "131135369387",
+    "firebase_url": "https://usthb9raya-5e940-default-rtdb.firebaseio.com",
+    "project_id": "usthb9raya-5e940",
+    "storage_bucket": "usthb9raya-5e940.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:734130186654:android:a6b3ea4239abd354ee4e8f",
+        "mobilesdk_app_id": "1:131135369387:android:e5788da14920e5999247ee",
         "android_client_info": {
-          "package_name": "com.example.usthb9raya"
+          "package_name": "com.example.usthb9rayaadmin"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCglQcc_u4eFCFVafKrlOSX5jZvDA3_gCM"
+          "current_key": "AIzaSyDBTVIftcTD0NeakdlyA-qAZ-hQ1StskeM"
         }
       ],
       "services": {
@@ -27,15 +27,15 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:734130186654:android:f70c2a31c0d2f5efee4e8f",
+        "mobilesdk_app_id": "1:131135369387:android:1c7934405b53f75a9247ee",
         "android_client_info": {
-          "package_name": "com.example.usthb9rayaadmin"
+          "package_name": "com.usthb9raya.usthb9raya"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCglQcc_u4eFCFVafKrlOSX5jZvDA3_gCM"
+          "current_key": "AIzaSyDBTVIftcTD0NeakdlyA-qAZ-hQ1StskeM"
         }
       ],
       "services": {

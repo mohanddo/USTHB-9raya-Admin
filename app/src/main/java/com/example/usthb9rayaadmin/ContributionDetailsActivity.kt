@@ -1,6 +1,7 @@
 package com.example.usthb9rayaadmin
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,12 +15,15 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.ContentLoadingProgressBar
 import com.example.usthb9rayaadmin.DataClass.Contribution
 import com.example.usthb9rayaadmin.Utils.DataStoreProvider
+import com.example.usthb9rayaadmin.Utils.FirebaseUtil
 import com.example.usthb9rayaadmin.Utils.FirebaseUtil.downloadFileToInternalStorage
 import com.example.usthb9rayaadmin.Utils.Util
+import com.example.usthb9rayaadmin.Utils.Util.alertDialog
 import com.example.usthb9rayaadmin.Utils.Util.extensionToMimeType
 import com.example.usthb9rayaadmin.Utils.Util.getFileExtension
 import com.example.usthb9rayaadmin.Utils.Util.openFileFromInternalStorage
 import com.example.usthb9rayaadmin.Utils.Util.openYouTubeLink
+import com.example.usthb9rayaadmin.Utils.Util.sendEmail
 import com.example.usthb9rayaadmin.Utils.Util.singleChoiceDialog
 import com.example.usthb9rayaadmin.databinding.ActivityContributionDetailsBinding
 import kotlinx.coroutines.CoroutineScope
@@ -114,6 +118,7 @@ class ContributionDetailsActivity : AppCompatActivity() {
 
         contribution.youtubeLink?.let { youtubeLinkString ->
 
+            binding.confirmYoutubeLinkButt.visibility = View.VISIBLE
             youtubeLink.visibility = View.VISIBLE
 
             openLinkButt.visibility = View.VISIBLE
@@ -122,9 +127,9 @@ class ContributionDetailsActivity : AppCompatActivity() {
             }
         }
 
-        binding.AcceptButt.setOnClickListener {
-            val i = Intent(this, ConfirmContributionActivity::class.java)
-            i.putExtra("contribution", contribution)
+        binding.confirmYoutubeLinkButt.setOnClickListener {
+            val i = Intent(this, ConfirmYoutubeLinkActivity::class.java)
+            i.putExtra("youtubeLink", contribution.youtubeLink!!)
             startActivity(i)
         }
 
@@ -139,6 +144,58 @@ class ContributionDetailsActivity : AppCompatActivity() {
                 val mimeType = extensionToMimeType(extension)
                 openFileFromInternalStorage(this, fileName, mimeType!!)
             }
+        }
+
+        val body = """
+        Hello ${contribution.fullName},
+        
+        Your contribution has been confirmed! Here are the details:
+        
+        Faculty: ${contribution.faculty}
+        
+        Module: ${contribution.module}
+        
+        Type: ${contribution.type}
+        
+        Files: ${contribution.fileNames?.joinToString(", ")}
+        
+        Date: ${Util.calculateDateFromTimestamp(contribution.timestamp)}
+        
+        Thank you for your contribution!
+        
+        Best regards,
+        USTHB 9raya Team
+    """.trimIndent()
+
+        binding.SendButt.setOnClickListener {
+            sendEmail(this,
+                contribution.email,
+                "Thank you for your contribution",
+                body
+            )
+        }
+
+        binding.deleteButt.setOnClickListener {
+            alertDialog(this, "Accept contribution", "Are you sure you want to accept this contribution?",
+                "Yes", "No", {
+                    progressBar.show()
+
+
+                        FirebaseUtil.deleteContributionFromFirebase(contribution.contributionId, {
+                            contribution.fileNames?.let { fileNames ->
+                                Util.deleteFilesFromInternalStorage(this, contribution.contributionId, fileNames)
+                            }
+                            val i = Intent(this, MainActivity::class.java)
+                            i.flags = FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(i)
+                        }, {
+                            progressBar.hide()
+                            Toast.makeText(this, "There was an error please try again.", Toast.LENGTH_SHORT).show()
+                        })
+
+                }, { dialog ->
+                    dialog.dismiss()
+                })
         }
     }
 }

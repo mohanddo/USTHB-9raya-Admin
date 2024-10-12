@@ -52,4 +52,5 @@
     <string name="link">link</string>
     <string name="name">name</string>
     <string name="send_email">Send Email</string>
+    <string name="delete_button">Delete Button</string>
 </resources>

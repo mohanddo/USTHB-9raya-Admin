@@ -39,6 +39,8 @@
         </TextView>
 
     </LinearLayout>
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -222,17 +224,38 @@
                         android:layout_marginVertical="16dp"
                         android:visibility="gone"/>
 
+
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/AcceptButt"
+                        android:id="@+id/confirmYoutubeLinkButt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/confirm_contribution"
+                        android:layout_marginVertical="16dp"
+                        android:background="@drawable/bck_butt_accept"
+                        android:text="@string/confirm_youtube_link"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
+                        android:visibility="gone"/>
+
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/SendButt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/send_email"
+                        android:layout_marginVertical="16dp"
                         android:background="@drawable/bck_butt_accept"
-                        android:layout_marginVertical="16dp"/>
+                        android:textAllCaps="false"/>
 
-
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/deleteButt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/delete_button"
+                        android:layout_marginVertical="16dp"
+                        android:background="@drawable/bck_deny"
+                        android:visibility="visible"
+                        android:layout_marginBottom="16dp"
+                        android:textAllCaps="false"/>
 
                 </LinearLayout>
 

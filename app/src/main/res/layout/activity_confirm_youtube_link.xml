@@ -7,12 +7,14 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ConfirmContributionActivity">
+    tools:context=".ConfirmYoutubeLinkActivity">
 
 
     <ScrollView
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +39,7 @@
                 android:padding="8dp"
                 android:lineSpacingExtra="4dp"
                 android:lineSpacingMultiplier="1.2"
-                android:visibility="gone"/>
+               />
 
             <EditText
                 android:id="@+id/YoutubeLink"
@@ -51,7 +53,7 @@
                 android:minHeight="48dp"
                 android:background="@drawable/bck_admin_input"
                 android:padding="8dp"
-                android:visibility="gone"/>
+                />
 
             <EditText
                 android:id="@+id/YoutubeFilterName"
@@ -67,41 +69,8 @@
                 android:background="@drawable/bck_admin_input"
                 android:padding="8dp"
                 android:textColor="@color/black"
-                android:visibility="gone"/>
+                />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/SendButt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/send_email"
-                android:visibility="gone"
-                android:layout_marginVertical="16dp"
-                android:background="@drawable/bck_butt_accept" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/ConfirmButtYoutube"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Confirm Youtube Link"
-                android:layout_marginVertical="16dp"
-                android:background="@drawable/bck_youtube"
-                android:visibility="gone"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/ConfirmFilesButt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/confirm_files"
-                android:layout_marginVertical="16dp"
-                android:background="@drawable/bck_deny"
-                android:visibility="gone"/>
-
-            <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/ProgressBar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/ConfirmYoutubeLinkButt"
@@ -110,17 +79,21 @@
                 android:text="@string/confirm_youtube_link"
                 android:layout_marginVertical="16dp"
                 android:background="@drawable/bck_deny"
-                android:visibility="gone"/>
-
-            <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/ProgressBarYoutube"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                />
 
         </LinearLayout>
 
+
     </ScrollView>
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/ProgressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/black"
+        android:visibility="gone"
+        />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

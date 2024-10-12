@@ -20,7 +20,7 @@
         android:theme="@style/Theme.USTHB9rayaAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".ConfirmContributionActivity"
+            android:name=".ConfirmYoutubeLinkActivity"
             android:exported="false" />
         <activity
             android:name=".ContributionDetailsActivity"
